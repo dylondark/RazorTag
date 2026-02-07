@@ -27,6 +27,7 @@ private slots:
     void on_fileInBrowseButton_clicked();
     void on_getMetadataButton_clicked();
     void on_tagButton_clicked();
+    void on_fileOutBrowseButton_clicked();
 
 private:
     Ui::MainWindow *ui;
