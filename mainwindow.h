@@ -28,6 +28,8 @@ private slots:
 
     void on_getMetadataButton_clicked();
 
+    void on_tagButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
