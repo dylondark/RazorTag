@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_browseButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(
         this,

@@ -24,8 +24,7 @@ protected:
     void dropEvent(QDropEvent *event) override;
 
 private slots:
-    void on_pushButton_clicked();
-
+    void on_browseButton_clicked();
     void on_getMetadataButton_clicked();
 
 private:

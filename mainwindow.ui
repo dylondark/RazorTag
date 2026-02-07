@@ -61,7 +61,7 @@
      </sizepolicy>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="browseButton">
     <property name="geometry">
      <rect>
       <x>550</x>
