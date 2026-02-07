@@ -51,12 +51,12 @@ void MainWindow::on_getMetadataButton_clicked()
         int year       = tag->year();
         int track      = tag->track();
 
-        qDebug() << "Title:" << title;
-        qDebug() << "Artist:" << artist;
-        qDebug() << "Album:" << album;
-        qDebug() << "Genre:" << genre;
-        qDebug() << "Year:" << year;
-        qDebug() << "Track:" << track;
+        ui->titleBox->setText(title);
+        ui->artistBox->setText(artist);
+        ui->albumBox->setText(album);
+        ui->genreBox->setText(genre);
+        ui->yearBox->setText(year > 0 ? QString::number(year) : "");
+        ui->trackBox->setText(track > 0 ? QString::number(track) : "");
     }
 
     if (f.audioProperties()) {
