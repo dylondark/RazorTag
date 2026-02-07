@@ -25,6 +25,30 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    // check if dropped folder has a url (is a file)
+    if (event->mimeData()->hasUrls())
+    {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    const QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty())
+        return;
+
+    // Take the first dropped file
+    QString filePath = urls.first().toLocalFile();
+
+    if (!filePath.isEmpty()) {
+        ui->fileInPathBox->setText(filePath);
+        qDebug() << "Dropped file:" << filePath;
+    }
+}
+
 void MainWindow::on_fileInBrowseButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(
@@ -90,30 +114,6 @@ void MainWindow::on_getMetadataButton_clicked()
     qDebug() << "\n";
 }
 
-void MainWindow::dragEnterEvent(QDragEnterEvent *event)
-{
-    // check if dropped folder has a url (is a file)
-    if (event->mimeData()->hasUrls())
-    {
-        event->acceptProposedAction();
-    }
-}
-
-void MainWindow::dropEvent(QDropEvent *event)
-{
-    const QList<QUrl> urls = event->mimeData()->urls();
-    if (urls.isEmpty())
-        return;
-
-    // Take the first dropped file
-    QString filePath = urls.first().toLocalFile();
-
-    if (!filePath.isEmpty()) {
-        ui->fileInPathBox->setText(filePath);
-        qDebug() << "Dropped file:" << filePath;
-    }
-}
-
 void MainWindow::on_tagButton_clicked()
 {
     QString inPath  = ui->fileInPathBox->text();
@@ -163,6 +163,8 @@ void MainWindow::on_tagButton_clicked()
     QString newTrack  = ui->trackBox->text();
     QString newYear   = ui->yearBox->text();
 
+    QPixmap newCoverArt = ui->coverArt->pixmap();
+
     if (!newTitle.isEmpty()) {
         tag->setTitle(TagLib::String(newTitle.toUtf8().constData(),
                                      TagLib::String::UTF8));
@@ -203,6 +205,10 @@ void MainWindow::on_tagButton_clicked()
             tag->setTrack(track);
             modified = true;
         }
+    }
+
+    if (!newCoverArt.isNull()) {
+
     }
 
     if (modified) {
