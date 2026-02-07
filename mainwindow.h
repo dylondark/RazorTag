@@ -27,6 +27,8 @@ private slots:
     void on_browseButton_clicked();
     void on_getMetadataButton_clicked();
 
+    void on_tagButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
