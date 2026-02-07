@@ -96,18 +96,39 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 void MainWindow::on_tagButton_clicked()
 {
-    QString fileName  = ui->fileOutPathBox->text();
-    QString newTitle  = ui->titleBox->text();
-    QString newArtist = ui->artistBox->text();
-    QString newAlbum  = ui->albumBox->text();
-    QString newGenre  = ui->genreBox->text();
-    QString newTrack  = ui->trackBox->text();
-    QString newYear   = ui->yearBox->text();
+    QString inPath  = ui->fileInPathBox->text();
+    QString outPath = ui->fileOutPathBox->text();
 
-    if (fileName.isEmpty())
+    if (inPath.isEmpty() || outPath.isEmpty())
         return;
 
-    TagLib::FileRef f(fileName.toUtf8().constData());
+    QFileInfo inInfo(inPath);
+    QFileInfo outInfo(outPath);
+
+    QString workingPath = inPath;
+
+    // ---- If output path differs, copy first ----
+    if (inInfo.absoluteFilePath() != outInfo.absoluteFilePath()) {
+        // Ensure target directory exists
+        QDir().mkpath(outInfo.absolutePath());
+
+        // Overwrite if destination already exists
+        if (QFile::exists(outPath))
+            QFile::remove(outPath);
+
+        if (!QFile::copy(inPath, outPath)) {
+            qDebug() << "Failed to copy file";
+            return;
+        }
+
+        workingPath = outPath;
+        qDebug() << "Created copy:" << outPath;
+    } else {
+        qDebug() << "Overwriting original file";
+    }
+
+    // ---- Open the file we are actually modifying ----
+    TagLib::FileRef f(workingPath.toUtf8().constData());
 
     if (f.isNull() || !f.tag())
         return;
@@ -115,7 +136,13 @@ void MainWindow::on_tagButton_clicked()
     TagLib::Tag* tag = f.tag();
     bool modified = false;
 
-    // ---- Write only if user provided input ----
+    QString newTitle  = ui->titleBox->text();
+    QString newArtist = ui->artistBox->text();
+    QString newAlbum  = ui->albumBox->text();
+    QString newGenre  = ui->genreBox->text();
+    QString newTrack  = ui->trackBox->text();
+    QString newYear   = ui->yearBox->text();
+
     if (!newTitle.isEmpty()) {
         tag->setTitle(TagLib::String(newTitle.toUtf8().constData(),
                                      TagLib::String::UTF8));
@@ -160,15 +187,8 @@ void MainWindow::on_tagButton_clicked()
 
     if (modified) {
         f.file()->save();
-        qDebug() << "Metadata updated successfully";
+        qDebug() << "Metadata written to:" << workingPath;
     }
-
-    qDebug() << "Title:"  << QString::fromStdString(tag->title().to8Bit(true));
-    qDebug() << "Artist:" << QString::fromStdString(tag->artist().to8Bit(true));
-    qDebug() << "Album:"  << QString::fromStdString(tag->album().to8Bit(true));
-    qDebug() << "Genre:"  << QString::fromStdString(tag->genre().to8Bit(true));
-    qDebug() << "Year:"   << tag->year();
-    qDebug() << "Track:"  << tag->track();
-    qDebug() << "\n";
 }
+
 
