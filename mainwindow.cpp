@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_browseButton_clicked()
+void MainWindow::on_fileInBrowseButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(
         this,
@@ -29,12 +29,13 @@ void MainWindow::on_browseButton_clicked()
         "Music files (*.mp3 *.flac *.wav *.aac *.ogg *.m4a *.opus);;All files (*.*)"
     );
 
-    ui->filePathBox->setText(fileName);
+    ui->fileInPathBox->setText(fileName);
+    ui->fileOutPathBox->setText(fileName);
 }
 
 void MainWindow::on_getMetadataButton_clicked()
 {
-    QString fileName = ui->filePathBox->text();
+    QString fileName = ui->fileInPathBox->text();
 
     if (fileName.isEmpty())
         return;
@@ -88,14 +89,14 @@ void MainWindow::dropEvent(QDropEvent *event)
     QString filePath = urls.first().toLocalFile();
 
     if (!filePath.isEmpty()) {
-        ui->filePathBox->setText(filePath);
+        ui->fileInPathBox->setText(filePath);
         qDebug() << "Dropped file:" << filePath;
     }
 }
 
 void MainWindow::on_tagButton_clicked()
 {
-    QString fileName  = ui->filePathBox->text();
+    QString fileName  = ui->fileOutPathBox->text();
     QString newTitle  = ui->titleBox->text();
     QString newArtist = ui->artistBox->text();
     QString newAlbum  = ui->albumBox->text();
