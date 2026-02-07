@@ -223,3 +223,27 @@ void MainWindow::on_fileOutBrowseButton_clicked()
     ui->fileOutPathBox->setText(fileName);
 }
 
+
+void MainWindow::on_artBrowseButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(
+        this,
+        "Open File",
+        QDir::homePath(),              // starting directory
+        "Image files (*.jpg *.jpeg *.png *.bmp *.gif);;All files (*.*)"
+        );
+
+    QPixmap pixmap;
+    if (pixmap.load(fileName)) {
+        ui->coverArt->setPixmap(
+            pixmap.scaled(
+                ui->coverArt->size(),
+                Qt::KeepAspectRatio,
+                Qt::SmoothTransformation
+                )
+            );
+    } else {
+        qDebug() << "Failed to load image:" << fileName;
+    }
+}
+
