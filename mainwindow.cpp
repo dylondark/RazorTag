@@ -191,4 +191,14 @@ void MainWindow::on_tagButton_clicked()
     }
 }
 
+void MainWindow::on_fileOutBrowseButton_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(
+        this,
+        "Save File",
+        QDir::homePath(),              // starting directory
+        "MP3 files (*.mp3);;FLAC files (*.flac);;WAV files (*.wav);;AAC files (*.aac);;OGG files (*.ogg);;M4A files (*.m4a);;OPUS files (*.opus);;All files (*.*)"
+        );
 
+    ui->fileOutPathBox->setText(fileName);
+}
