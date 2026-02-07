@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>RazorTag</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="getMetadataButton">
@@ -50,7 +50,7 @@
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>371</width>
+      <width>531</width>
       <height>24</height>
      </rect>
     </property>
@@ -64,7 +64,7 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>550</x>
       <y>30</y>
       <width>80</width>
       <height>24</height>
@@ -72,6 +72,19 @@
     </property>
     <property name="text">
      <string>Browse</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Music file:</string>
     </property>
    </widget>
   </widget>
