@@ -1,11 +1,16 @@
 #include "mainwindow.h"
+#include "getCoverArtUtility.h"
 #include "./ui_mainwindow.h"
 #include <QFileDialog>
 #include <QMimeData>
 #include <QUrl>
+#include <QPixmap>
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 #include <taglib/audioproperties.h>
+#include <taglib/mpegfile.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/attachedpictureframe.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -41,6 +46,21 @@ void MainWindow::on_getMetadataButton_clicked()
         return;
 
     TagLib::FileRef f(fileName.toUtf8().constData());
+
+    QPixmap cover = getCoverArtUtility(fileName);
+
+    if (!cover.isNull()) {
+        ui->coverArt->setPixmap(
+            cover.scaled(
+                ui->coverArt->size(),
+                Qt::KeepAspectRatio,
+                Qt::SmoothTransformation
+                )
+            );
+    } else {
+        ui->coverArt->clear();
+        ui->coverArt->setText("No cover art");
+    }
 
     if (!f.isNull() && f.tag()) {
         TagLib::Tag *tag = f.tag();
@@ -202,3 +222,4 @@ void MainWindow::on_fileOutBrowseButton_clicked()
 
     ui->fileOutPathBox->setText(fileName);
 }
+
