@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(RazorTag VERSION 0.1 LANGUAGES CXX)
+project(InTAGrator VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -21,7 +21,7 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(RazorTag
+    qt_add_executable(InTAGrator
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         getCoverArtUtility.h
@@ -29,32 +29,32 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
     )
 # Define target properties for Android with Qt 6 as:
-#    set_property(TARGET RazorTag APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+#    set_property(TARGET InTAGrator APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 else()
     if(ANDROID)
-        add_library(RazorTag SHARED
+        add_library(InTAGrator SHARED
             ${PROJECT_SOURCES}
         )
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
-        add_executable(RazorTag
+        add_executable(InTAGrator
             ${PROJECT_SOURCES}
         )
     endif()
 endif()
 
-target_link_libraries(RazorTag PRIVATE Qt${QT_VERSION_MAJOR}::Widgets TagLib::TagLib)
+target_link_libraries(InTAGrator PRIVATE Qt${QT_VERSION_MAJOR}::Widgets TagLib::TagLib)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.RazorTag)
+  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.InTAGrator)
 endif()
-set_target_properties(RazorTag PROPERTIES
+set_target_properties(InTAGrator PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -63,12 +63,12 @@ set_target_properties(RazorTag PROPERTIES
 )
 
 include(GNUInstallDirs)
-install(TARGETS RazorTag
+install(TARGETS InTAGrator
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(RazorTag)
+    qt_finalize_executable(InTAGrator)
 endif()
