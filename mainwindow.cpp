@@ -253,3 +253,8 @@ void MainWindow::on_artBrowseButton_clicked()
     }
 }
 
+void MainWindow::on_closeButton_clicked()
+{
+    close();
+}
+
