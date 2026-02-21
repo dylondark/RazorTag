@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setAcceptDrops(true);
+
+    ui->metadataTable->setHorizontalHeaderLabels({"Value"});
+    ui->metadataTable->setVerticalHeaderLabels({"Title", "Artist", "Album", "Genre", "Track", "Year"});
 }
 
 MainWindow::~MainWindow()
@@ -62,7 +65,7 @@ void MainWindow::on_fileInBrowseButton_clicked()
     ui->fileOutPathBox->setText(fileName);
 }
 
-void MainWindow::on_getMetadataButton_clicked()
+void MainWindow::on_loadFileButton_clicked()
 {
     QString fileName = ui->fileInPathBox->text();
 
@@ -96,12 +99,12 @@ void MainWindow::on_getMetadataButton_clicked()
         int year       = tag->year();
         int track      = tag->track();
 
-        ui->titleBox->setText(title);
-        ui->artistBox->setText(artist);
-        ui->albumBox->setText(album);
-        ui->genreBox->setText(genre);
-        ui->yearBox->setText(year > 0 ? QString::number(year) : "");
-        ui->trackBox->setText(track > 0 ? QString::number(track) : "");
+        ui->metadataTable->setItem(0, 0, new QTableWidgetItem(title));
+        ui->metadataTable->setItem(1, 0, new QTableWidgetItem(artist));
+        ui->metadataTable->setItem(2, 0, new QTableWidgetItem(album));
+        ui->metadataTable->setItem(3, 0, new QTableWidgetItem(genre));
+        ui->metadataTable->setItem(4, 0, new QTableWidgetItem(QString::number(track)));
+        ui->metadataTable->setItem(5, 0, new QTableWidgetItem(QString::number(year)));
     }
 
     if (f.audioProperties()) {
@@ -156,12 +159,12 @@ void MainWindow::on_tagButton_clicked()
     TagLib::Tag* tag = f.tag();
     bool modified = false;
 
-    QString newTitle  = ui->titleBox->text();
-    QString newArtist = ui->artistBox->text();
-    QString newAlbum  = ui->albumBox->text();
-    QString newGenre  = ui->genreBox->text();
-    QString newTrack  = ui->trackBox->text();
-    QString newYear   = ui->yearBox->text();
+    QString newTitle  = ui->metadataTable->item(0, 0)->text();
+    QString newArtist = ui->metadataTable->item(1, 0)->text();
+    QString newAlbum  = ui->metadataTable->item(2, 0)->text();
+    QString newGenre  = ui->metadataTable->item(3, 0)->text();
+    QString newTrack  = ui->metadataTable->item(4, 0)->text();
+    QString newYear   = ui->metadataTable->item(5, 0)->text();
 
     QPixmap newCoverArt = ui->coverArt->pixmap();
 
